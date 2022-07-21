@@ -1,5 +1,6 @@
 package com.poe.crm.api;
 
+import com.poe.crm.api.dto.ClientDTO;
 import com.poe.crm.business.Client;
 import com.poe.crm.business.service.CrmService;
 import org.apache.coyote.Response;
@@ -18,47 +19,80 @@ import java.util.Optional;
 @RestController
 @RequestMapping("api")
 public class ClientController {
-    // @Autowired : injection de Service dans cette classe (récupération automatique du bean)
-    // On a plus besoin de déclarer la variable Service ici (Service service = new Service();)
-    // car Spring la recherche directement dans le bean correspondant, ce qui nous permet d'utiliser
-    // les méthodes du bean injecté
+
     @Autowired
     CrmService crmService;
-    // @GetMapping : traitement d'une requête http GET et mapping de cette requête
-    // Equivalent à une annotation @GET + une annotation @RequestMapping
-
 
     @GetMapping("clients")
     public List<Client> getAll() {
 
         return crmService.getAllClients();
     }
-    // Traitement d'une requête http POST et mapping de cette requête
-    // Equivalent à une annotation @POST + une annotation @RequestMapping
-
-
 
     @PostMapping("clients")
-    public void createClient(@RequestBody Client client) {
+    public void createClient(@RequestBody Client client){
         crmService.addClient(client);
-
     }
 
-
-    // @PathVariable : liaison entre le paramètre "id" de la méthode et l'uri de la requête http
     @GetMapping("clients/{id}")
-    public ResponseEntity<Client> findClientById(@PathVariable("id") Long id) {
-
+    public ResponseEntity<ClientDTO> findClientById(@PathVariable("id") Long id){
         Optional<Client> o = crmService.findClient(id);
-
-        if (o.isPresent()) {
-            return ResponseEntity.status(HttpStatus.OK).body(o.get());
-
-        }else {
+        if(o.isPresent()){
+            Client client = o.get();
+            ClientDTO clientDTO = new ClientDTO(client);
+            clientDTO.setTotalExpense(crmService.calculateExpense(client.getId()));
+            return ResponseEntity.status(HttpStatus.OK).body(clientDTO);
+        }
+        else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @DeleteMapping("clients/{id}")
+    public ResponseEntity<String> delete(@PathVariable("id") Long id) {
+        boolean hasDeleted = crmService.deleteClient(id);
+        if(hasDeleted){
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).
+                    body("L'identifiant ne correspond à aucun Client");
         }
 
     }
+
+
+    @PutMapping("clients/{id}")
+    public ResponseEntity<String> update(@PathVariable("id") Long id, @RequestBody Client client){
+
+        if(! id.equals( client.getId())){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).
+                    body("L'identifiant dans URL ne correspond à identifiant dans body");
+        } else {
+            if(crmService.updateClient(client)){
+                return ResponseEntity.status(HttpStatus.OK).build();
+            }
+            else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).
+                        body("L'identifiant ne correspond à aucun Client");
+            }
+        }
+    }
+
+    // Exemple : http://localhost:8080/api/searchclients?companyname=Google
+    @GetMapping("searchclients")
+    public List<Client> searchByCompanyName(
+            @RequestParam(value="companyname") String companyName){
+
+        return crmService.searchByCompanyName(companyName);
+    }
+
+    // Exemple: http://localhost:8080/api/searchbyfirstnameandlastname?firstname=James&lastname=Bond
+    @GetMapping("searchbyfirstnameandlastname")
+    public List<Client> searchByFirstNameAndLastName(
+            @RequestParam(value="firstname") String firstName,
+            @RequestParam(value="lastname") String lastName){
+
+        return crmService.searchByFirstNameAndLastName(firstName,lastName);
+    }
+
 }
-
-

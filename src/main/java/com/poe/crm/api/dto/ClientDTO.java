@@ -1,53 +1,50 @@
-package com.poe.crm.business;
+package com.poe.crm.api.dto;
+
+import com.poe.crm.business.Client;
+import com.poe.crm.business.ClientState;
+import com.poe.crm.business.Order;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
-@Table(name="clients")
-public class Client {
+public class ClientDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "companyName")
-    private String companyName; // company_name
-    @Column(name = "firstName")
+    private String companyName;
     private String firstName;
-    @Column(name = "lastName")
     private String lastName;
     private String email;
     private String phone;
     private String address;
-    @Column(name = "zipCode")
     private String zipCode;
     private String city;
     private String country;
 
-
     private ClientState state;
 
-    @OneToMany(mappedBy="client", fetch = FetchType.EAGER)
     private List<Order> orders;
 
+    private float totalExpense;
 
-    public Client() {
+    public ClientDTO(){
     }
 
-    public Client(String companyName, String firstName, String lastName, String email,
-                  String phone, String address, String zipCode, String city,
-                  String country, ClientState state) {
-        this.companyName = companyName;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phone = phone;
-        this.address = address;
-        this.zipCode = zipCode;
-        this.city = city;
-        this.country = country;
-        this.state = state;
+    public ClientDTO(Client client){
+        this.id = client.getId();
+        this.companyName = client.getCompanyName();
+        this.firstName = client.getFirstName();
+        this.lastName = client.getLastName();
+        this.email = client.getEmail();
+        this.phone = client.getPhone();
+        this.address = client.getAddress();
+        this.zipCode = client.getZipCode();
+        this.city = client.getCity();
+        this.country = client.getCountry();
+
+        this.state = client.getState();
+
+        this.orders = client.getOrders();
+
     }
 
     public Long getId() {
@@ -138,28 +135,19 @@ public class Client {
         this.state = state;
     }
 
-    @Override
-    public String toString() {
-        return "Client{" +
-                "id=" + id +
-                ", companyName='" + companyName + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", address='" + address + '\'' +
-                ", zipCode='" + zipCode + '\'' +
-                ", city='" + city + '\'' +
-                ", country='" + country + '\'' +
-                ", state=" + state +
-                '}';
-    }
-
     public List<Order> getOrders() {
         return orders;
     }
 
     public void setOrders(List<Order> orders) {
         this.orders = orders;
+    }
+
+    public float getTotalExpense() {
+        return totalExpense;
+    }
+
+    public void setTotalExpense(float totalExpense) {
+        this.totalExpense = totalExpense;
     }
 }
