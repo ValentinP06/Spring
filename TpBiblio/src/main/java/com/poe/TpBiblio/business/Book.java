@@ -1,9 +1,17 @@
 package com.poe.TpBiblio.business;
 
-public class Book {
 
+import javax.persistence.*;
+
+@Entity
+@Table(name="books")
+public class Book {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name="title")
     private String name;
+    @Column(name="category")
     private String category;
 
         public Book(){

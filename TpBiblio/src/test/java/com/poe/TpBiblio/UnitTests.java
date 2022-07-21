@@ -13,8 +13,8 @@ public class UnitTests {
     void testAjoutBook() {
         CrmService crmService = new CrmService();
         Book book = new Book();
-        book.setName("delon");
-        book.setCategory("personne");
+        book.setName("livre dela jungle");
+        book.setCategory("enfant");
 
         crmService.addBook(book);
 

@@ -40,4 +40,16 @@ public class BookController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+    @DeleteMapping("books/{id}")
+    public void deleteBook(@PathVariable("id") Long id)
+    {
+        crmService.deleteBook(id);
+    }
+
+    @PutMapping("books/id")
+    public void updateBook(@RequestBody Book book)
+    {
+        crmService.updateBook(book);
+    }
 }
