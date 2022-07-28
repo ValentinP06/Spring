@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Ajouter une question et ses reponses (deux):</h1>
+
+<form method="post">
+
+    <label>Question</label>
+    <select name="difficulté">
+        <option value="facile">facile/easy</option>
+        <option value="dur" selected>dur/hard</option>
+    </select>
+    <label>title</label>
+    <input type="text" name="title">
+    <label>option 1</label>
+    <input type="text" name="optionA">
+    <label>option 2</label>
+    <input type="text" name="optionB">
+    <label> réponse</label>
+    <input type="text" name="ans">
+    <label> chose</label>
+    <input type="text" name="chose">
+
+    <input type="submit" value="Ajouter">
+</form>
+
+      <?php	if (isset($_POST['question'])) {
+			$mysqli = new mysqli("localhost", "root", "", "essai");
+            $mysqli-> set_charset("utf8");
+        $requete = "INSERT INTO question VALUES(NULL, '" . $_POST['title'] . "', '" . $_POST['optionA'] . "', '" . $_POST['optionB'] . "', '" . $_POST['ans'] . "', '" . $_POST['chose'] . "')";
+        $resultat = $mysqli->query($requete);
+        if ($resultat)
+        echo "<p>La question a été ajouté</p>";
+        else
+        echo "<p>Erreur</p>";
+}
+?>
+</body>
+</html>

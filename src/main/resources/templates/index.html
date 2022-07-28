@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h1>Quiz l'application n°1 des ventes </h1>
+<div>
+
+
+
+        <form action="/quizz" method="post">
+            <p>Enter ton name</p>
+            <input type="text" name="username"  required />
+            <button type="submit">Start Quizz</button>
+
+            <button type="button" th:onclick="window.location.href='/score'"
+        >voir les scores</button>
+
+            <button type="button" th:onclick="window.location.href='/affichelesquestions'">voir les questions</button>
+        </form>
+</div>
+
+
+</body>
+</html>

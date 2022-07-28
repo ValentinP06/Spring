@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h1> Liste des questions :</h1>
+
+<form action="submit" method="post" th:object=${quizz}>
+
+    <div th:each="question, i: ${quizz.questions}">
+        <p  th:text="${question.title}"></p>
+    </div>
+</form>
+
+
+<button type="button" th:onclick="window.location.href='/creerlesquestions'">creer les questions</button>
+
+
+</body>
+</html>

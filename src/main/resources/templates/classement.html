@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <h1> Score de la partie :</h1>
+
+
+    <div>
+      <p> name du participant : </p>
+      <p th:if="${classement}" th:text="${classement.username}"></p>
+    </div>
+
+
+    <div>
+      <p>Total reponse correct:&nbsp;</p>
+      <p th:if="${classement}" th:text="${classement.totalCorrect}"></p>
+    </div>
+
+
+
+    <div >
+      <p>Total reponse fausse:</p>
+      <p th:if="${classement}" th:text="5 - ${classement.totalCorrect}"></p>
+    </div>
+
+
+
+
+    <div>
+      <button type="button" th:onclick="window.location.href='/score'"
+             >voir table des score</button>
+
+
+      <button type="button" th:onclick="window.location.href='/'">acceuil</button>
+    </div>
+
+
+
+
+</body>
+</html>

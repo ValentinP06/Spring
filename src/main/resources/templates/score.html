@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h3 >Classement des joueurs :</h3>
+
+<table>
+  <tr>
+    <th>nom</th>
+    <th>Score</th>
+  </tr>
+  <tr th:each="score : ${classement}">
+    <td th:text="${score.username}"></td>
+    <td th:text="${score.totalCorrect}"></td>
+  </tr>
+</table>
+
+
+
+
+
+
+<div>
+    <button type="button" th:onclick="window.location.href='/score'">voir table des score</button>
+    <button type="button" th:onclick="window.location.href='/'">acceuil</button>
+</div>
+
+
+
+</body>
+</html>
